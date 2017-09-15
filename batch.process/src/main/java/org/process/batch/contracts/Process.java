@@ -14,6 +14,13 @@ import org.worker.contracts.Work;
 public interface Process extends Init, Destroy {
 
 	/**
+	 * This method allow you to set the process name.
+	 * 
+	 * @param processName
+	 */
+	public void setProcessName(String processName);
+
+	/**
 	 * This method will allow you accomplish your work with its best
 	 * multi-thread effort.
 	 * 

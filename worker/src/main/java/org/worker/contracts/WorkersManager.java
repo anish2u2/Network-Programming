@@ -7,6 +7,8 @@ public interface WorkersManager extends Init, Destroy {
 
 	public void assignWroker(Work work);
 
+	public void assignWroker(Work work, String processName);
+
 	public void releaseWorkers();
 
 }

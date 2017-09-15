@@ -5,9 +5,15 @@ import org.worker.contracts.Work;
 
 public class Process extends AbstractProcess {
 
+	private String processName;
+
+	{
+		init();
+	}
+
 	@Override
 	public void init() {
-
+		processName = "Process";
 		super.init();
 	}
 
@@ -24,6 +30,11 @@ public class Process extends AbstractProcess {
 	}
 
 	public void stopProcess() {
+
+	}
+
+	public void setProcessName(String processName) {
+		this.processName = processName;
 
 	}
 
