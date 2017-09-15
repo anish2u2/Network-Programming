@@ -9,8 +9,8 @@ public interface Writer extends Init, Destroy {
 
 	public void setOutputStream(OutputStream outputStream);
 
-	public void write(byte[] buffer);
+	public void write(byte[] buffer) throws Exception;
 
-	public void write(String data);
+	public void write(String data) throws Exception;
 
 }

@@ -19,14 +19,13 @@ public class Main {
 					System.out.println("Starting Reading: " + Thread.currentThread().getName());
 					try {
 						while (inputStream.read(buffer) != -1) {
-
+							System.out.println(Thread.currentThread().getName());
 						}
 						System.out.println("Spent Time:" + (System.currentTimeMillis() - time));
 						synchronized (obj) {
 							obj.notify();
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -34,7 +33,7 @@ public class Main {
 				}
 			};
 			for (int counter = 0; counter < 4; counter++) {
-				new Thread(runnable).start();
+				new Thread(runnable, "Worker-" + counter).start();
 			}
 			synchronized (obj) {
 				obj.wait();
