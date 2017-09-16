@@ -42,4 +42,10 @@ public class StreamReader extends AbstractStreamReader {
 		dataInputStream.close();
 	}
 
+	@Override
+	public InputStream getInputStream() {
+		// TODO Auto-generated method stub
+		return dataInputStream;
+	}
+
 }

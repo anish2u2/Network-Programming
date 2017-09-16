@@ -30,4 +30,10 @@ public class StreamWriter extends AbstractStreamWriter {
 		dataOutputStream.close();
 	}
 
+	@Override
+	public OutputStream getOutputStream() {
+		// TODO Auto-generated method stub
+		return dataOutputStream;
+	}
+
 }

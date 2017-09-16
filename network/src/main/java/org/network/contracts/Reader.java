@@ -18,4 +18,6 @@ public interface Reader extends Init, Destroy {
 	public long readLong() throws Exception;
 
 	public void close() throws Exception;
+
+	public InputStream getInputStream();
 }

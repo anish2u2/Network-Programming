@@ -4,4 +4,6 @@ public interface Work {
 
 	public void work();
 
+	public void stopWork();
+
 }
