@@ -1,7 +1,6 @@
 package org.network.server.abstracts;
 
 import java.net.ServerSocket;
-import java.net.Socket;
 
 import org.commons.properties.ApplicationPropertyReader;
 import org.network.contracts.Server;
@@ -17,6 +16,10 @@ public abstract class AbstractServer implements Server {
 	private static String log_file_location = "";
 
 	private static int client_socket_connection_per_request = 0;
+
+	{
+		init();
+	}
 
 	@Override
 	public void init() {
@@ -35,7 +38,11 @@ public abstract class AbstractServer implements Server {
 
 	@Override
 	public String startServer() {
-
+		try {
+			serverSocket = new ServerSocket(default_port);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return null;
 	}
 
@@ -51,10 +58,5 @@ public abstract class AbstractServer implements Server {
 		return null;
 	}
 
-	@Override
-	public void stopServer() {
-
-	}
-
-	protected abstract void initRequest(Socket socket);
+	protected abstract void initRequest(final ServerSocket serverSocket);
 }

@@ -1,6 +1,9 @@
 package org.network.contracts;
 
-public interface CommunicationChannel {
+import org.commons.contracts.Destroy;
+import org.commons.contracts.Init;
+
+public interface CommunicationChannel extends Init, Destroy {
 
 	public void setWriter(Writer writer);
 
