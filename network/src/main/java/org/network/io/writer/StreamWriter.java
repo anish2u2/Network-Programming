@@ -25,4 +25,9 @@ public class StreamWriter extends AbstractStreamWriter {
 		super.destroy();
 	}
 
+	@Override
+	public void close() throws Exception {
+		dataOutputStream.close();
+	}
+
 }

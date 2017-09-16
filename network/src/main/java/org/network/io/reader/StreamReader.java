@@ -37,4 +37,9 @@ public class StreamReader extends AbstractStreamReader {
 		return dataInputStream.readLong();
 	}
 
+	@Override
+	public void close() throws Exception {
+		dataInputStream.close();
+	}
+
 }
