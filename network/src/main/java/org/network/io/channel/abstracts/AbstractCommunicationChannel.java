@@ -19,7 +19,7 @@ public abstract class AbstractCommunicationChannel implements Channel, Init, Des
 	public CommunicationChannel create() {
 		final Socket requestSocket = this.socket;
 		socket = null;
-		return new CommunicationChannel() {
+		CommunicationChannel communicationChannel = new CommunicationChannel() {
 			private Writer writer;
 			private Reader reader;
 
@@ -73,7 +73,14 @@ public abstract class AbstractCommunicationChannel implements Channel, Init, Des
 				writer = null;
 				reader = null;
 			}
+
+			@Override
+			public boolean isCommunicationAlive() {
+				return !requestSocket.isClosed();
+			}
 		};
+		addCommunicationChannelForFutureGC(communicationChannel);
+		return communicationChannel;
 	}
 
 	@Override
@@ -85,4 +92,6 @@ public abstract class AbstractCommunicationChannel implements Channel, Init, Des
 	public void destroy() {
 		socket = null;
 	}
+
+	protected abstract void addCommunicationChannelForFutureGC(CommunicationChannel channel);
 }

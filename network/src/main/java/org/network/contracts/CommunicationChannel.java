@@ -13,4 +13,6 @@ public interface CommunicationChannel extends Init, Destroy {
 
 	public Reader getReader();
 
+	public boolean isCommunicationAlive();
+
 }

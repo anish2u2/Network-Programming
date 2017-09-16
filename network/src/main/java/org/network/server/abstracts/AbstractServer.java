@@ -1,5 +1,6 @@
 package org.network.server.abstracts;
 
+import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import org.commons.properties.ApplicationPropertyReader;
@@ -40,6 +41,8 @@ public abstract class AbstractServer implements Server {
 	public String startServer() {
 		try {
 			serverSocket = new ServerSocket(default_port);
+			initRequest(serverSocket);
+			return serverSocket.getInetAddress().getHostAddress();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -48,13 +51,25 @@ public abstract class AbstractServer implements Server {
 
 	@Override
 	public String startServer(int port) {
-
+		try {
+			serverSocket = new ServerSocket(port);
+			initRequest(serverSocket);
+			return serverSocket.getInetAddress().getHostAddress();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public String startServer(String address, int port, int numberOfConnectionToConsume) {
-
+		try {
+			serverSocket = new ServerSocket(port, numberOfConnectionToConsume, InetAddress.getByName(address));
+			initRequest(serverSocket);
+			return serverSocket.getInetAddress().getHostAddress();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		return null;
 	}
 

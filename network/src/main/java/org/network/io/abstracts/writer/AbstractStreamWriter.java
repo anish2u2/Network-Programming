@@ -22,11 +22,19 @@ public abstract class AbstractStreamWriter implements Writer {
 	@Override
 	public void write(byte[] buffer) throws Exception {
 		dataOutputStream.write(buffer);
+		dataOutputStream.flush();
 	}
 
 	@Override
 	public void write(String data) throws Exception {
 		dataOutputStream.writeUTF(data);
+		dataOutputStream.flush();
+	}
+
+	@Override
+	public void write(long value) throws Exception {
+		dataOutputStream.writeLong(value);
+		dataOutputStream.flush();
 	}
 
 	@Override

@@ -13,4 +13,6 @@ public interface Writer extends Init, Destroy {
 
 	public void write(String data) throws Exception;
 
+	public void write(long value) throws Exception;
+
 }

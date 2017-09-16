@@ -22,14 +22,19 @@ public class StreamReader extends AbstractStreamReader {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
+
 		super.init();
 	}
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+
 		super.destroy();
+	}
+
+	@Override
+	public long readLong() throws Exception {
+		return dataInputStream.readLong();
 	}
 
 }

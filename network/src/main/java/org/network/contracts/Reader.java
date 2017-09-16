@@ -14,4 +14,6 @@ public interface Reader extends Init, Destroy {
 	public String read() throws Exception;
 
 	public void setInputStream(InputStream inputStream);
+
+	public long readLong() throws Exception;
 }
