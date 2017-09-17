@@ -31,6 +31,7 @@ public class FileWritingWork implements Work, Init, Destroy {
 				writer.write(buffer);
 				index++;
 			}
+			writer.write(-1);
 			writer.close();
 		} catch (Exception ex) {
 			halt = true;

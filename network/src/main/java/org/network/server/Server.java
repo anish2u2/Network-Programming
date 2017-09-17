@@ -45,6 +45,11 @@ public class Server extends AbstractServer {
 					}
 				}
 			}
+
+			@Override
+			public void stopWork() {
+				serverCommand.stopServerCommandExecuted = true;
+			}
 		});
 	}
 

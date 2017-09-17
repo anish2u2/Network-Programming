@@ -64,6 +64,12 @@ public class CommunicationChannelFactory extends AbstractCommunicationChannel {
 					}
 				}
 			}
+
+			@Override
+			public void stopWork() {
+				setOfCreatedCommunication.clear();
+				setOfCreatedCommunication = null;
+			}
 		});
 	}
 
