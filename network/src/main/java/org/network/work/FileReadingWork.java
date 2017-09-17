@@ -2,12 +2,12 @@ package org.network.work;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
 import org.commons.properties.ApplicationPropertyReader;
 import org.network.contracts.Reader;
+import org.network.data.BufferSegment;
 import org.pattern.contracts.behavioral.Signal;
 import org.worker.contracts.Work;
 import org.worker.manager.WorkersManager;
@@ -15,8 +15,6 @@ import org.worker.manager.WorkersManager;
 public class FileReadingWork implements Work, Init, Destroy {
 
 	private boolean halt;
-
-	private OutputStream outputStream;
 
 	private Reader reader;
 
@@ -30,6 +28,10 @@ public class FileReadingWork implements Work, Init, Destroy {
 
 	private long index = 0;
 
+	private String fileName;
+
+	private Signal<Object> readingNotifier;
+
 	@Override
 	public void work() {
 		try {
@@ -38,7 +40,7 @@ public class FileReadingWork implements Work, Init, Destroy {
 				temp.mkdirs();
 			}
 
-			String fileName = reader.read().split(":")[1];
+			// String fileName = reader.read().split(":")[1];
 			byte[] buffer = new byte[default_buffer_size];
 			index = reader.readLong();
 			while (reader.read(buffer) != -1 && !halt) {
@@ -46,10 +48,11 @@ public class FileReadingWork implements Work, Init, Destroy {
 				index = reader.readLong();
 			}
 			haltTempFileWriter = true;
+			readingNotifier.releaseSignal(null);
 		} catch (Exception ex) {
 			haltTempFileWriter = true;
-			bufferAvailableSignal.releaseSignal(new Data("null" + index, new byte[] { 'e', 'o', 'f' }));
-
+			bufferAvailableSignal.releaseSignal(new Data("null", BufferSegment.SEGMENT_END));
+			readingNotifier.releaseSignal(null);
 			ex.printStackTrace();
 
 		}
@@ -63,7 +66,6 @@ public class FileReadingWork implements Work, Init, Destroy {
 	@Override
 	public void destroy() {
 		bufferAvailableSignal.destroy();
-		outputStream = null;
 		reader = null;
 		tempDirectory = null;
 	}
@@ -77,18 +79,22 @@ public class FileReadingWork implements Work, Init, Destroy {
 		startWritingToTempFile();
 	}
 
-	private static class BufferAvailableSignal implements Signal<Data>, Init, Destroy {
+	public void setReader(Reader reader) {
+		this.reader = reader;
+	}
+
+	private static class BufferAvailableSignal implements Signal<BufferSegment>, Init, Destroy {
 
 		private Object lock;
 
-		private Data buffer;
+		private BufferSegment buffer;
 
 		@Override
-		public Data aquireSignal() {
+		public BufferSegment aquireSignal() {
 			try {
 				synchronized (lock) {
 					lock.wait();
-					Data data = this.buffer;
+					BufferSegment data = this.buffer;
 					buffer = null;
 					return data;
 				}
@@ -99,7 +105,7 @@ public class FileReadingWork implements Work, Init, Destroy {
 		}
 
 		@Override
-		public void releaseSignal(Data data) {
+		public void releaseSignal(BufferSegment data) {
 			synchronized (lock) {
 				this.buffer = data;
 				lock.notifyAll();
@@ -125,7 +131,7 @@ public class FileReadingWork implements Work, Init, Destroy {
 			public void work() {
 				try {
 					while (!haltTempFileWriter) {
-						Data buffer = bufferAvailableSignal.aquireSignal();
+						BufferSegment buffer = bufferAvailableSignal.aquireSignal();
 						File file = new File(tempDirectory, buffer.getFileName());
 						file.createNewFile();
 						FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -140,12 +146,12 @@ public class FileReadingWork implements Work, Init, Destroy {
 
 			@Override
 			public void stopWork() {
-
+				haltTempFileWriter = true;
 			}
 		});
 	}
 
-	private static final class Data {
+	private static final class Data implements BufferSegment {
 
 		private byte[] buffer;
 
@@ -160,17 +166,22 @@ public class FileReadingWork implements Work, Init, Destroy {
 			return buffer;
 		}
 
-		public void setBuffer(byte[] buffer) {
-			this.buffer = buffer;
-		}
-
+		@Override
 		public String getFileName() {
 			return fileName;
 		}
 
-		public void setFileName(String fileName) {
-			this.fileName = fileName;
-		}
+	}
 
+	public void setFileReadingSignal(Signal<Object> signal) {
+		readingNotifier = signal;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public long getIndex() {
+		return index;
 	}
 }

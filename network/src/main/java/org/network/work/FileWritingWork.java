@@ -13,27 +13,32 @@ public class FileWritingWork implements Work, Init, Destroy {
 
 	private Writer writer;
 
-	private String fileName;
-
 	private InputStream fileInputStream;
 
 	private int default_buffer_size = 0;
 
 	private boolean halt = false;
 
+	private int index = 0;
+
 	@Override
 	public void work() {
 		byte[] buffer = new byte[default_buffer_size];
 		try {
-			int index = 0;
-			writer.write("fileName:" + fileName);
+
 			while (fileInputStream.read(buffer) != -1 && !halt) {
 				writer.write(index);
 				writer.write(buffer);
 				index++;
 			}
+			writer.close();
 		} catch (Exception ex) {
 			halt = true;
+			try {
+				writer.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -52,11 +57,8 @@ public class FileWritingWork implements Work, Init, Destroy {
 
 	@Override
 	public void destroy() {
-
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+		writer = null;
+		fileInputStream = null;
 	}
 
 	@Override
