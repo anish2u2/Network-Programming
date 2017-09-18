@@ -53,6 +53,10 @@ public abstract class AbstractWorkersManager implements ObjectPooling<Worker>, I
 
 		}
 
+		{
+			init();
+		}
+
 		public void destroy() {
 			System.out.println("Destroying Workers Monitor.");
 			for (Worker worker : workers) {
@@ -96,7 +100,8 @@ public abstract class AbstractWorkersManager implements ObjectPooling<Worker>, I
 					POOL_SIZE--;
 				}
 			}
-			workers.clear();
+			if (POOL_SIZE > 5)
+				workers.clear();
 			System.out.println("All workers are released.");
 		}
 

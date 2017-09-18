@@ -16,6 +16,10 @@ public class CommunicationChannelFactory extends AbstractCommunicationChannel {
 
 	private Set<CommunicationChannel> setOfCreatedCommunication;
 
+	{
+		init();
+	}
+
 	@Override
 	public void init() {
 		setOfCreatedCommunication = new HashSet<CommunicationChannel>();

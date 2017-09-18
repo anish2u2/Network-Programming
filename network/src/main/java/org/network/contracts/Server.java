@@ -13,4 +13,6 @@ public interface Server extends Init, Destroy {
 
 	public void stopServer();
 
+	public CommunicationChannel getCommunicationChannel();
+
 }

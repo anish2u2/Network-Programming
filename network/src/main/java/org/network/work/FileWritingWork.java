@@ -2,6 +2,7 @@ package org.network.work;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
@@ -20,12 +21,20 @@ public class FileWritingWork implements Work, Init, Destroy {
 	private boolean halt = false;
 
 	private int index = 0;
+	{
+		init();
+	}
+
+	private long startTime = 0;
 
 	@Override
 	public void work() {
+
 		byte[] buffer = new byte[default_buffer_size];
 		try {
-
+			if (startTime == 0) {
+				startTime = Calendar.getInstance().getTimeInMillis();
+			}
 			while (fileInputStream.read(buffer) != -1 && !halt) {
 				writer.write(index);
 				writer.write(buffer);
@@ -33,6 +42,10 @@ public class FileWritingWork implements Work, Init, Destroy {
 			}
 			writer.write(-1);
 			writer.close();
+			halt = true;
+			System.out.println("Work Done.");
+			System.out.println(
+					"Time taken:" + ((Calendar.getInstance().getTimeInMillis() - startTime) / 1000) + "seconds");
 		} catch (Exception ex) {
 			halt = true;
 			try {

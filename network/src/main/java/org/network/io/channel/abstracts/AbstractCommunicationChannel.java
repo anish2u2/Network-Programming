@@ -61,9 +61,11 @@ public abstract class AbstractCommunicationChannel implements Channel, Init, Des
 
 			@Override
 			public void destroy() {
-				writer.destroy();
+				if (writer != null)
+					writer.destroy();
 				writer = null;
-				reader.destroy();
+				if (reader != null)
+					reader.destroy();
 				reader = null;
 			}
 

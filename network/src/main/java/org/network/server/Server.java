@@ -37,9 +37,12 @@ public class Server extends AbstractServer {
 			public void work() {
 				while (!serverCommand.isStopServerCommandExecuted()) {
 					try {
+						System.out.println("Server started..");
 						Socket socket = serverSocket.accept();
+						System.out.println("Got Connection:" + socket.getPort());
 						channel.setSocket(socket);
 						signal.releaseSignal(channel.create());
+						Thread.sleep(600);
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
@@ -76,6 +79,11 @@ public class Server extends AbstractServer {
 			this.stopServerCommandExecuted = isStopServerCommandExecuted;
 		}
 
+	}
+
+	@Override
+	public CommunicationChannel getCommunicationChannel() {
+		return signal.aquireSignal();
 	}
 
 }

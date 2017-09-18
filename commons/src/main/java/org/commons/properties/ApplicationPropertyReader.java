@@ -1,13 +1,12 @@
 package org.commons.properties;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.Properties;
 
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
+import org.commons.utils.Util;
 
 public class ApplicationPropertyReader implements org.commons.contracts.ApplicationPropertyReader, Init, Destroy {
 
@@ -53,15 +52,21 @@ public class ApplicationPropertyReader implements org.commons.contracts.Applicat
 	}
 
 	public void init() {
-		try (InputStream stream = new FileInputStream(new File(PROP_FILE_NAME + ".properties"))) {
+		try (InputStream stream = Util.getResourceAsStream(PROP_FILE_NAME + ".properties")) {
 			properties = new Properties();
 			properties.load(stream);
 			String propFileName = properties.getProperty("prop.files.name");
 			if (propFileName != null) {
 				String[] splitedPropFileName = propFileName.split(",");
+				for (String file : splitedPropFileName)
+					System.out.println("Props:" + file);
 				for (String prop : splitedPropFileName) {
-					try (InputStream subPropStream = new FileInputStream(new File(prop + ".properties"))) {
-						properties.load(subPropStream);
+					try (InputStream subPropStream = Util.getResourceAsStream(prop + ".properties")) {
+						Properties pro = new Properties();
+						pro.load(subPropStream);
+						for (Object key : pro.keySet()) {
+							properties.put(key, pro.get(key));
+						}
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
