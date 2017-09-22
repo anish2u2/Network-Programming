@@ -13,6 +13,10 @@ public class ClientFactory extends AbstractClientFactory {
 
 	private static ClientFactory clientFactory;
 
+	{
+		init();
+	}
+
 	private ClientFactory() {
 		if (clientFactory != null) {
 			throw new ObjectAlreadyCreatedException();

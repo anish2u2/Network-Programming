@@ -48,7 +48,7 @@ public abstract class AbstractFileReader implements FileReader {
 
 	@Override
 	public void setInputStream(InputStream inputStream) {
-		inputStream = new DataInputStream(inputStream);
+		this.inputStream = new DataInputStream(inputStream);
 	}
 
 	@Override

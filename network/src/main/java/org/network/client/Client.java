@@ -7,7 +7,8 @@ public class Client extends AbstractClient {
 
 	@Override
 	public CommunicationChannel getCommunicationChannel() {
-		return null;
+
+		return getCommunication();
 	}
 
 }

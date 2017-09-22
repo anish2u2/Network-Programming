@@ -20,7 +20,7 @@ public class FileWritingWork implements Work, Init, Destroy {
 
 	private boolean halt = false;
 
-	private int index = 0;
+	// private int index = 0;
 	{
 		init();
 	}
@@ -35,12 +35,11 @@ public class FileWritingWork implements Work, Init, Destroy {
 			if (startTime == 0) {
 				startTime = Calendar.getInstance().getTimeInMillis();
 			}
+			// int content = 0;
 			while (fileInputStream.read(buffer) != -1 && !halt) {
-				writer.write(index);
-				writer.write(buffer);
-				index++;
+				writer.write(new String(buffer, "UTF8"));
 			}
-			writer.write(-1);
+			writer.write("/n");
 			writer.close();
 			halt = true;
 			System.out.println("Work Done.");

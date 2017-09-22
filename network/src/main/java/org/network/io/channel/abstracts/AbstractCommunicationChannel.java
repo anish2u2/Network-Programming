@@ -46,7 +46,7 @@ public abstract class AbstractCommunicationChannel implements Channel, Init, Des
 			@Override
 			public Reader getReader() {
 
-				return this.getReader();
+				return this.reader;
 			}
 
 			@Override

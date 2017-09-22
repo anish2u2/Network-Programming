@@ -7,8 +7,9 @@ public abstract class AbstractClientFactory implements ClientFactory {
 
 	@Override
 	public Client create() {
-
-		return null;
+		Client client = new org.network.client.Client();
+		addClient(client);
+		return client;
 	}
 
 	@Override

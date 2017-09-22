@@ -17,6 +17,9 @@ public abstract class AbstractClient implements Client {
 	private Channel channel;
 
 	private static int default_server_port = 0;
+	{
+		init();
+	}
 
 	@Override
 	public void init() {
@@ -65,4 +68,11 @@ public abstract class AbstractClient implements Client {
 		}
 	}
 
+	protected Channel getChannel() {
+		return channel;
+	}
+
+	protected CommunicationChannel getCommunication() {
+		return communicationChannel;
+	}
 }
