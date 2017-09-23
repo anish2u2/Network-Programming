@@ -13,17 +13,23 @@ public class MultipleThreadWriting {
 	public static void main(String args[]) {
 		try {
 			memoryUtilization();
-			FileInputStream inputStream = new FileInputStream(new File("D:/ActiveMQ in Action.pdf"));
+			FileInputStream inputStream = new FileInputStream(new File(
+					"D:/Music & Videos/unmanaged/Ra One - Chammak Challo - YouTube[via torchbrowser.com].mp4"));
 			File dir = new File("D:/temp");
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}
-			FileOutputStream fileOutputStream = new FileOutputStream(new File(dir, "ActiveMQ in Action.pdf"));
+			FileOutputStream fileOutputStream = new FileOutputStream(
+					new File(dir, "Ra One - Chammak Challo - YouTube[via torchbrowser.com].mp4"));
 			reader.setInputStream(inputStream);
-			Thread readerThread = new Thread(getInputStreamReaderJob(inputStream), "Reader-Job");
-			Thread writerThread = new Thread(getWriterRunnable(fileOutputStream), "Writer-Job");
-			readerThread.start();
+			Thread readerThread1 = new Thread(getInputStreamReaderJob(inputStream), "Reader-Job-1");
+			Thread readerThread2 = new Thread(getInputStreamReaderJob(inputStream), "Reader-Job-2");
+			Thread writerThread = new Thread(getWriterRunnable(fileOutputStream), "Writer-Job-1");
+			Thread writerThread1 = new Thread(getWriterRunnable(fileOutputStream), "Writer-Job-2");
+			readerThread1.start();
+			readerThread2.start();
 			writerThread.start();
+			writerThread1.start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -112,12 +118,14 @@ public class MultipleThreadWriting {
 
 		private InputStream inputStream;
 		int value;
-		byte[] buffer = new byte[1048576];
+		byte[] buffer = new byte[1024];
 
 		public int read() throws Exception {
-			value = inputStream.read(buffer);
-			byteArrayOutputStream.writeToStream(buffer);
-			return value;
+			synchronized (inputStream) {
+				value = inputStream.read(buffer);
+				byteArrayOutputStream.writeToStream(buffer);
+				return value;
+			}
 		}
 
 		public void setInputStream(InputStream inputStream) {
@@ -130,15 +138,19 @@ public class MultipleThreadWriting {
 		return new Runnable() {
 			private long time;
 
+			private Object lock = new Object();
+
 			@Override
 			public void run() {
 				try {
 					time = Calendar.getInstance().getTimeInMillis();
 					while (!halt) {
-						byte[] buffer = byteArrayOutputStream.getBuffer();
-						if (buffer != null) {
-							outputStream.write(buffer);
-							outputStream.flush();
+						synchronized (outputStream) {
+							byte[] buffer = byteArrayOutputStream.getBuffer();
+							if (buffer != null) {
+								outputStream.write(buffer);
+								outputStream.flush();
+							}
 						}
 					}
 					System.out.println(
