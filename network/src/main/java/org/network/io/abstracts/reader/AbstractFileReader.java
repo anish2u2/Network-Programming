@@ -7,14 +7,16 @@ import org.network.contracts.FileReader;
 
 public abstract class AbstractFileReader implements FileReader {
 
-	private DataInputStream inputStream;
+	private InputStream inputStream;
+
+	private DataInputStream dis;
 
 	public AbstractFileReader() {
 
 	}
 
 	public AbstractFileReader(InputStream inputStream) {
-		this.inputStream = new DataInputStream(inputStream);
+		this.inputStream = inputStream;
 	}
 
 	@Override
@@ -37,24 +39,25 @@ public abstract class AbstractFileReader implements FileReader {
 	@Override
 	public String readLine() throws Exception {
 
-		return inputStream.readLine();
+		return dis.readLine();
 	}
 
 	@Override
 	public String read() throws Exception {
 
-		return inputStream.readUTF();
+		return dis.readUTF();
 	}
 
 	@Override
 	public void setInputStream(InputStream inputStream) {
 		this.inputStream = new DataInputStream(inputStream);
+		this.dis = new DataInputStream(inputStream);
 	}
 
 	@Override
 	public long readLong() throws Exception {
 
-		return inputStream.readLong();
+		return dis.readLong();
 	}
 
 	@Override

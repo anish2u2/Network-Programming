@@ -10,4 +10,8 @@ public interface SynchronizedStreamReaderWrapper {
 
 	public void setSynchronizedByteWriter(SynchronizedStreamWriterWrapper streamWriterWrapper);
 
+	public void sendEOFSignal() throws Exception;
+
+	//public int readUTF() throws Exception;
+
 }

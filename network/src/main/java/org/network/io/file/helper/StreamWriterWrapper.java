@@ -14,6 +14,7 @@ public class StreamWriterWrapper implements SynchronizedStreamWriterWrapper {
 	public void writeBytes(byte[] buffer) throws Exception {
 		synchronized (lock) {
 			byteArrayOutputStream.write(buffer, 0, buffer.length);
+			byteArrayOutputStream.flush();
 		}
 	}
 
@@ -23,6 +24,14 @@ public class StreamWriterWrapper implements SynchronizedStreamWriterWrapper {
 			byte[] buffer = byteArrayOutputStream.toByteArray();
 			this.byteArrayOutputStream = new ByteArrayOutputStream();
 			return buffer;
+		}
+	}
+
+	@Override
+	public void reachesEOF() throws Exception {
+		synchronized (lock) {
+			byteArrayOutputStream.write(-1);
+			byteArrayOutputStream.flush();
 		}
 	}
 

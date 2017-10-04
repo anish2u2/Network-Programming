@@ -9,6 +9,8 @@ public abstract class AbstractFileWriter implements FileWriter {
 
 	private DataOutputStream outputStream;
 
+	private OutputStream os;
+
 	public AbstractFileWriter() {
 
 	}
@@ -30,6 +32,7 @@ public abstract class AbstractFileWriter implements FileWriter {
 	@Override
 	public void setOutputStream(OutputStream outputStream) {
 		this.outputStream = new DataOutputStream(outputStream);
+		this.os = outputStream;
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public abstract class AbstractFileWriter implements FileWriter {
 
 	@Override
 	public OutputStream getOutputStream() {
-		return outputStream;
+		return os;
 	}
 
 }

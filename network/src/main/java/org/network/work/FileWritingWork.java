@@ -1,6 +1,7 @@
 package org.network.work;
 
 import java.io.OutputStream;
+import java.util.Calendar;
 
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
@@ -11,13 +12,21 @@ public class FileWritingWork implements Work, Init, Destroy {
 
 	private SynchronizedStreamWriterWrapper writer;
 
+	private Object lock = new Object();
+
 	private OutputStream outputStream;
+
+	private long startTime;
+	private long endTime;
+
+	private int numberOfWorkersExecuting;
 
 	private boolean halt = false;
 
 	@Override
 	public void destroy() {
-
+		outputStream = null;
+		writer = null;
 	}
 
 	@Override
@@ -28,14 +37,26 @@ public class FileWritingWork implements Work, Init, Destroy {
 	@Override
 	public void work() {
 		try {
+			numberOfWorkersExecuting++;
+			startTime = Calendar.getInstance().getTimeInMillis();
 			while (!halt) {
-				synchronized (outputStream) {
+				synchronized (lock) {
 					byte[] buffer = writer.getBufferedBytes();
 					if (buffer != null) {
 						outputStream.write(buffer);
 						outputStream.flush();
 					}
 				}
+			}
+			endTime = Calendar.getInstance().getTimeInMillis();
+			System.out.println("value-1:" + numberOfWorkersExecuting);
+			numberOfWorkersExecuting--;
+			System.out.println("value:" + numberOfWorkersExecuting);
+			if (numberOfWorkersExecuting == 0) {
+				System.out.println("closing connection.");
+//				outputStream.write(-1);
+//				outputStream.flush();
+//				outputStream.close();
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -53,6 +74,10 @@ public class FileWritingWork implements Work, Init, Destroy {
 
 	public void setOutputStream(OutputStream outputStream) {
 		this.outputStream = outputStream;
+	}
+
+	public int totalRunningTimeInMB() {
+		return (int) ((endTime - startTime) / 1000);
 	}
 
 }

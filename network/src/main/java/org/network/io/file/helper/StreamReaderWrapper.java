@@ -12,12 +12,22 @@ public class StreamReaderWrapper implements SynchronizedStreamReaderWrapper {
 	byte[] buffer = new byte[1024];
 	private SynchronizedStreamWriterWrapper byteArrayWriter;
 
+	private Object lock = new Object();
+
 	@Override
 	public int read() throws Exception {
-		synchronized (stream) {
+		synchronized (lock) {
 			value = stream.read(buffer);
 			byteArrayWriter.writeBytes(buffer);
+			if (value == -1)
+				byteArrayWriter.reachesEOF();
 			return value;
+		}
+	}
+
+	public void sendEOFSignal() throws Exception {
+		synchronized (lock) {
+			byteArrayWriter.reachesEOF();
 		}
 	}
 
