@@ -6,6 +6,7 @@ import org.commons.contracts.Buffer;
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
 import org.network.contracts.ConcurrentWriter;
+import org.network.io.abstracts.writer.ByteArrayOutputWriter;
 import org.worker.contracts.Work;
 
 public class StringArrayWriterWork implements Init, Work, Destroy {
@@ -24,6 +25,12 @@ public class StringArrayWriterWork implements Init, Work, Destroy {
 
 	private WorkType type;
 
+	private ByteArrayOutputWriter byteArrayOutputWriter;
+
+	public void setByteArrayOutputWriter(ByteArrayOutputWriter byteArrayOutputWriter) {
+		this.byteArrayOutputWriter = byteArrayOutputWriter;
+	}
+
 	public StringArrayWriterWork(WorkType type) {
 		this.type = type;
 		init();
@@ -39,13 +46,10 @@ public class StringArrayWriterWork implements Init, Work, Destroy {
 		writer.setBuffer(buffer);
 		writer.setOutputStream(outputStream);
 		try {
-			while (!halt) {
-				if (writer.writer() == -1) {
-					halt = true;
-					break;
-				}
-			}
-			outputStream.close();
+			writer.setByteArrayOutputStream(this.byteArrayOutputWriter);
+			writer.writer();
+
+			//outputStream.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

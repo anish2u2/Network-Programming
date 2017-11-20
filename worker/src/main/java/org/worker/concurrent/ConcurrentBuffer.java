@@ -2,21 +2,23 @@ package org.worker.concurrent;
 
 import org.commons.contracts.Buffer;
 
-public class ConcurrentBuffer<T> implements org.worker.contracts.ConcurrentBuffer<T> {
+public class ConcurrentBuffer<T,K> implements org.worker.contracts.ConcurrentBuffer<T,K> {
 
 	@SuppressWarnings("rawtypes")
 	private static ConcurrentBuffer concurrentBuffer;
 
-	private ConcurrentBuffer() {
-
-	}
+	
 
 	@SuppressWarnings("unchecked")
-	public Buffer<T> getBuffer(T type) {
-
-		if (String.class.isAssignableFrom(type.getClass())) {
+	public Buffer<T> getBuffer(K type) {
+		System.out.println("class Name:"+type.getClass().getClass());
+		System.out.println("class Name:"+type.getClass().getClass());
+		if ("String".equals(type)) {
+			System.out.println("String class is assignable..");
 			return (Buffer<T>) new org.worker.concurrent.buffer.StringBuffer();
+			
 		}
+		System.out.println("String class is not assingable.");
 		return null;
 	}
 
@@ -27,5 +29,6 @@ public class ConcurrentBuffer<T> implements org.worker.contracts.ConcurrentBuffe
 		}
 		return concurrentBuffer;
 	}
+
 
 }

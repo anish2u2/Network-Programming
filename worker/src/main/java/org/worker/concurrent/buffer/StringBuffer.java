@@ -7,23 +7,39 @@ import org.commons.contracts.Init;
 public class StringBuffer implements Buffer<String>, Init, Destroy {
 
 	private Object lock;
-
+	
+	private boolean isClosed=false;
+	
 	private StringBuilder builder;
+	
+	{
+		init();
+	}
 
 	public void push(String data) {
-
+		//System.out.println(data);
 		synchronized (lock) {
 			builder.append(data);
+			lock.notifyAll();
 		}
 
 	}
 
 	public String pull() {
+		try {
 		synchronized (lock) {
 			String readedData = builder.toString();
+			//System.out.println(readedData);
+			if(readedData==null) {
+				lock.wait();
+				readedData = builder.toString();
+			}
 			builder.delete(0, builder.length());
 			return readedData;
+		}}catch(Exception ex) {
+			ex.printStackTrace();
 		}
+		return null;
 	}
 
 	public void destroy() {
@@ -41,6 +57,11 @@ public class StringBuffer implements Buffer<String>, Init, Destroy {
 		synchronized (lock) {
 			builder.append("/n");
 		}
+		isClosed=true;
+	}
+	public boolean isBufferClosed() {
+		
+		return isClosed;
 	}
 
 }

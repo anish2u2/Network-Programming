@@ -1,9 +1,14 @@
 package org.network.client.io.helper;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.commons.contracts.Buffer;
 import org.commons.utils.Base64Utility;
+import org.network.io.abstracts.writer.ByteArrayOutputWriter;
+import org.process.batch.action.Process;
+import org.worker.contracts.Work;
+import org.worker.manager.WorkersManager;
 
 public class ConcurrentWriter implements org.network.contracts.ConcurrentWriter {
 
@@ -12,6 +17,8 @@ public class ConcurrentWriter implements org.network.contracts.ConcurrentWriter 
 	private OutputStream outputStream;
 
 	private Buffer buffer;
+
+	private ByteArrayOutputWriter byteArrayOutputWriter;
 
 	Base64Utility bas64 = new Base64Utility();
 
@@ -28,15 +35,38 @@ public class ConcurrentWriter implements org.network.contracts.ConcurrentWriter 
 	@Override
 	public int writer() {
 		try {
-			synchronized (lock) {
-				outputStream.write(bas64.convertStringToByte(buffer));
-				outputStream.flush();
-			}
+			startDeamonThread();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return -1;
 		}
 		return 0;
+	}
+
+	private void startDeamonThread() {
+		WorkersManager.getInstance().assignWroker(new Work() {
+
+			@Override
+			public void work() {
+				try {
+					byteArrayOutputWriter.writeTo(outputStream);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void stopWork() {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+
+	@Override
+	public void setByteArrayOutputStream(ByteArrayOutputWriter byteArrayOutputStream) {
+		this.byteArrayOutputWriter = byteArrayOutputStream;
 	}
 
 }

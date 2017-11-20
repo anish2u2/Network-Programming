@@ -62,7 +62,7 @@ public class EventListener implements ActionListener, Destroy {
 			CommunicationChannel communicationChannel = client.getCommunicationChannel();
 			FileReader fileReader = new org.network.io.file.reader.FileReader();
 			fileReader.setInputStream(communicationChannel.getReader().getInputStream());
-			fileReader.readFile("D:/temp");
+			fileReader.readFile("/home/anish/temp");
 		}
 	}
 

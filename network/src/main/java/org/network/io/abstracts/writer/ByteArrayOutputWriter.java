@@ -6,6 +6,8 @@ import java.io.OutputStream;
 
 public class ByteArrayOutputWriter extends ByteArrayOutputStream {
 
+	private boolean isClosed = false;
+
 	@Override
 	public synchronized void writeTo(OutputStream out) throws IOException {
 		super.writeTo(out);
@@ -17,4 +19,17 @@ public class ByteArrayOutputWriter extends ByteArrayOutputStream {
 		super.write(b);
 	}
 
+	@Override
+	public void close() throws IOException {
+		isClosed = true;
+		super.close();
+	}
+
+	public boolean isClosed() {
+		return isClosed;
+	}
+
+	public void setClosed(boolean isClosed) {
+		this.isClosed = isClosed;
+	}
 }

@@ -10,5 +10,7 @@ public interface Buffer<T> extends Init, Destroy {
 	public T pull();
 
 	public void close();
+	
+	public boolean isBufferClosed();
 
 }
