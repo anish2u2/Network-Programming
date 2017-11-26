@@ -35,7 +35,6 @@ public class ByteArrayReaderWork implements Init, Work, Destroy, ByteArrayReader
 		try {
 			long startTime = Calendar.getInstance().getTimeInMillis();
 			while (readData() != -1) {
-				System.out.println("print..");
 			}
 			notifyer.notifyObject();
 			System.out.println("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));

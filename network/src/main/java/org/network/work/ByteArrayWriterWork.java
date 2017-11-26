@@ -8,7 +8,6 @@ import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
 import org.network.contracts.ByteArrayWriter;
 import org.pattern.contracts.behavioral.Notifyer;
-import org.pattern.contracts.behavioral.Signal;
 import org.worker.contracts.Work;
 
 public class ByteArrayWriterWork implements ByteArrayWriter, Destroy, Init, Work {
@@ -55,8 +54,6 @@ public class ByteArrayWriterWork implements ByteArrayWriter, Destroy, Init, Work
 					+ endCounter);
 			if (!isStreamClosed && startCounter == endCounter) {
 				synchronized (outputStream) {
-					System.out.println("Closing stream.");
-					//outputStream.write(-1);
 					outputStream.close();
 					isStreamClosed = true;
 				}
