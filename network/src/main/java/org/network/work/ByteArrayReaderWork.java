@@ -3,6 +3,7 @@ package org.network.work;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 import org.commons.contracts.Destroy;
@@ -19,11 +20,15 @@ public class ByteArrayReaderWork implements Init, Work, Destroy, ByteArrayReader
 
 	private int value;
 
-	private byte[] data = new byte[1024 * 8];
+	private OutputStream outputStream;
+
+	private byte[] data = new byte[1024];
 
 	private boolean haltWork;
 
 	private Notifyer notifyer;
+
+	private Object lock = new Object();
 
 	@Override
 	public void destroy() {
@@ -35,7 +40,12 @@ public class ByteArrayReaderWork implements Init, Work, Destroy, ByteArrayReader
 		try {
 			long startTime = Calendar.getInstance().getTimeInMillis();
 			while (readData() != -1) {
+
 			}
+			outputStream.close();
+			/*
+			 * while (readData() != -1) { }
+			 */
 			notifyer.notifyObject();
 			System.out.println("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));
 			System.out.println("Memory used:"
@@ -46,13 +56,12 @@ public class ByteArrayReaderWork implements Init, Work, Destroy, ByteArrayReader
 	}
 
 	private int readData() throws IOException {
-		synchronized (inputStream) {
+		synchronized (lock) {
 			value = inputStream.read(data);
-			synchronized (byteArrayOutputStream) {
-				byteArrayOutputStream.write(data);
-			}
-			return !haltWork ? value : -1;
+			outputStream.write(data);
+			outputStream.flush();
 		}
+		return value;
 
 	}
 
@@ -81,4 +90,7 @@ public class ByteArrayReaderWork implements Init, Work, Destroy, ByteArrayReader
 		this.notifyer = notifyer;
 	}
 
+	public void setOutputStream(OutputStream outputStream) {
+		this.outputStream = outputStream;
+	}
 }

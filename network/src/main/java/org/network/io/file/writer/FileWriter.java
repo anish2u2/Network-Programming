@@ -10,6 +10,7 @@ import org.network.work.ByteArrayReaderWork;
 import org.network.work.ByteArrayWriterWork;
 import org.pattern.contracts.behavioral.Notifyer;
 import org.process.batch.contracts.Process;
+import org.worker.manager.WorkersManager;
 
 public class FileWriter extends AbstractFileWriter {
 
@@ -45,9 +46,12 @@ public class FileWriter extends AbstractFileWriter {
 
 			byteArrayReaderWork.setInputStream(new FileInputStream(file));
 			byteArrayWriterWork.setOutputStream(getOutputStream());
-			process = new org.process.batch.action.Process();
+			byteArrayReaderWork.setOutputStream(getOutputStream());
 			process.startProcess(byteArrayReaderWork);
-			process.startProcess(byteArrayWriterWork);
+			// WorkersManager.getInstance().assignWroker(byteArrayReaderWork);
+			// process = new org.process.batch.action.Process();
+			// process.startProcess(byteArrayReaderWork);
+			// process.startProcess(byteArrayWriterWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -61,9 +65,12 @@ public class FileWriter extends AbstractFileWriter {
 			this.write("fileName:" + file.getName());
 			byteArrayReaderWork.setInputStream(new FileInputStream(file));
 			byteArrayWriterWork.setOutputStream(getOutputStream());
-			process = new org.process.batch.action.Process();
+			byteArrayReaderWork.setOutputStream(getOutputStream());
 			process.startProcess(byteArrayReaderWork);
-			process.startProcess(byteArrayWriterWork);
+			// WorkersManager.getInstance().assignWroker(byteArrayReaderWork);
+			// process = new org.process.batch.action.Process();
+			// process.startProcess(byteArrayReaderWork);
+			// process.startProcess(byteArrayWriterWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

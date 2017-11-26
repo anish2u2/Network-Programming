@@ -11,6 +11,7 @@ import org.network.work.ByteArrayReaderWork;
 import org.network.work.ByteArrayWriterWork;
 import org.pattern.contracts.behavioral.Notifyer;
 import org.process.batch.contracts.Process;
+import org.worker.manager.WorkersManager;
 
 public class FileReader extends AbstractFileReader {
 
@@ -52,9 +53,12 @@ public class FileReader extends AbstractFileReader {
 			FileOutputStream fos = new FileOutputStream(Filehelper.createFile(toFileLocation, fileName));
 			byteArrayReaderWork.setInputStream(getInputStream());
 			byteArrayWriterWork.setOutputStream(fos);
-			Process process = new org.process.batch.action.Process();
+			byteArrayReaderWork.setOutputStream(fos);
 			process.startProcess(byteArrayReaderWork);
-			process.startProcess(byteArrayWriterWork);
+			//WorkersManager.getInstance().assignWroker(byteArrayReaderWork);
+			// Process process = new org.process.batch.action.Process();
+			// process.startProcess(byteArrayReaderWork);
+			// process.startProcess(byteArrayWriterWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
