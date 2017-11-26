@@ -19,7 +19,6 @@ public class IOWork implements Init, Work, Destroy {
 
 	private byte[] data = new byte[1024];
 
-
 	private Object lock = new Object();
 
 	private int threadCounter;
