@@ -7,6 +7,8 @@ import java.util.Calendar;
 
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
+import org.network.signal.IONotifyer;
+import org.pattern.contracts.behavioral.Notifyer;
 import org.worker.contracts.Work;
 
 public class IOWork implements Init, Work, Destroy {
@@ -21,11 +23,18 @@ public class IOWork implements Init, Work, Destroy {
 
 	private Object lock = new Object();
 
+	private Notifyer notifyer;
+
 	private int threadCounter;
 
 	@Override
 	public void destroy() {
-
+		synchronized (lock) {
+			lock = null;
+		}
+		data = null;
+		outputStream = null;
+		inputStream = null;
 	}
 
 	@Override
@@ -48,6 +57,9 @@ public class IOWork implements Init, Work, Destroy {
 	}
 
 	private int readData() throws IOException {
+		if (notifyer.isNotified()) {
+			return -1;
+		}
 		synchronized (lock) {
 			value = inputStream.read(data);
 			outputStream.write(data);
@@ -59,11 +71,12 @@ public class IOWork implements Init, Work, Destroy {
 
 	@Override
 	public void stopWork() {
+		notifyer.notifyObject();
 	}
 
 	@Override
 	public void init() {
-
+		
 	}
 
 	public void setInputStream(InputStream inputStream) {
@@ -73,6 +86,14 @@ public class IOWork implements Init, Work, Destroy {
 
 	public void setOutputStream(OutputStream outputStream) {
 		this.outputStream = outputStream;
+	}
+
+	public Notifyer getIoNotifyer() {
+		return notifyer;
+	}
+
+	public void setIoNotifyer(Notifyer ioNotifyer) {
+		this.notifyer = ioNotifyer;
 	}
 
 }
