@@ -47,8 +47,8 @@ public class ByteArrayReaderWork implements Init, Work, Destroy, ByteArrayReader
 			 * while (readData() != -1) { }
 			 */
 			notifyer.notifyObject();
-			System.out.println("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));
-			System.out.println("Memory used:"
+			org.logger.api.Logger.getInstance().info("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));
+			org.logger.api.Logger.getInstance().info("Memory used:"
 					+ ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000) + " M.B");
 		} catch (Exception e) {
 			e.printStackTrace();

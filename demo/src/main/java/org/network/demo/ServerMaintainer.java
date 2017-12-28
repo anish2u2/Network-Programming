@@ -13,7 +13,7 @@ public class ServerMaintainer implements Destroy {
 	}
 
 	public void startServer() {
-		System.out.println(server.startServer());
+		org.logger.api.Logger.getInstance().info(server.startServer());
 	}
 
 	public void stopServer() {
@@ -25,7 +25,7 @@ public class ServerMaintainer implements Destroy {
 	}
 
 	public CommunicationChannel getChannel() {
-		System.out.println("Waiting for the communication channel.");
+		org.logger.api.Logger.getInstance().info("Waiting for the communication channel.");
 		return server.getCommunicationChannel();
 	}
 }

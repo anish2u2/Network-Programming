@@ -36,7 +36,7 @@ public class FileReadingWork implements Work, Init, Destroy {
 			startTime = Calendar.getInstance().getTimeInMillis();
 			while (!halt) {
 				if (reader.read() == -1) {
-					System.out.println("Got break statement");
+					org.logger.api.Logger.getInstance().info("Got break statement");
 					break;
 				}
 			}

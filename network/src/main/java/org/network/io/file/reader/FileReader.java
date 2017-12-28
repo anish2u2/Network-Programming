@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.network.file.Filehelper;
 import org.network.io.abstracts.reader.AbstractFileReader;
+import org.network.signal.IONotifyer;
 import org.network.work.IOWork;
 import org.process.batch.contracts.Process;
 
@@ -26,6 +27,7 @@ public class FileReader extends AbstractFileReader {
 		super.init();
 		process = new org.process.batch.action.Process();
 		ioWork = new IOWork();
+		ioWork.setIoNotifyer(new IONotifyer());
 
 	}
 

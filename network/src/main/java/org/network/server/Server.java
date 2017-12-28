@@ -37,9 +37,9 @@ public class Server extends AbstractServer {
 			public void work() {
 				while (!serverCommand.isStopServerCommandExecuted()) {
 					try {
-						System.out.println("Server started..");
+						org.logger.api.Logger.getInstance().info("Server started..");
 						Socket socket = serverSocket.accept();
-						System.out.println("Got Connection:" + socket.getPort());
+						org.logger.api.Logger.getInstance().info("Got Connection:" + socket.getPort());
 						channel.setSocket(socket);
 						signal.releaseSignal(channel.create());
 						Thread.sleep(600);

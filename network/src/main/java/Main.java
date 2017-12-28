@@ -29,7 +29,7 @@ public class Main {
 			final FileOutputStream fileOutputStream = new FileOutputStream(fil);
 			long fileSize = file.length();
 			final int rate = getThroughput(fileSize);
-			System.out.println("Throughput:" + rate);
+			org.logger.api.Logger.getInstance().info("Throughput:" + rate);
 
 			long time = System.currentTimeMillis();
 			final Signal signal = new Signal();
@@ -37,7 +37,7 @@ public class Main {
 				public void run() {
 					byte[] buffer = new byte[1024];
 					long time = System.currentTimeMillis();
-					System.out.println("Starting Reading: " + Thread.currentThread().getName());
+					org.logger.api.Logger.getInstance().info("Starting Reading: " + Thread.currentThread().getName());
 					try {
 						while (inputStream.available() > 0) {
 							byte[] buff = new byte[1024];
@@ -47,12 +47,12 @@ public class Main {
 						signal.release(END);
 						halt = true;
 						inputStream.close();
-						System.out.println("Spent Time:" + (System.currentTimeMillis() - time));
+						org.logger.api.Logger.getInstance().info("Spent Time:" + (System.currentTimeMillis() - time));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
-					System.out.println("Reading Done: " + Thread.currentThread().getName());
+					org.logger.api.Logger.getInstance().info("Reading Done: " + Thread.currentThread().getName());
 				}
 			};
 			Runnable runTo = new Runnable() {
@@ -93,7 +93,7 @@ public class Main {
 			 * "D:/movies/captain.underpants.the.first.epic.movie.2017.bdrip.x264-drones.mkv"
 			 * ))); long counter = 0; byte[] buffer = new byte[1024 * 1024];
 			 * while (gZipOutputStream.read() != -1) { counter++; }
-			 * System.out.println("total read MB:" + (counter / (1024 * 1024)));
+			 * org.logger.api.Logger.getInstance().info("total read MB:" + (counter / (1024 * 1024)));
 			 * gZipOutputStream.close();
 			 */
 

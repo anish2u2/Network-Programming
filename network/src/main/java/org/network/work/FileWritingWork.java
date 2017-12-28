@@ -49,11 +49,11 @@ public class FileWritingWork implements Work, Init, Destroy {
 				}
 			}
 			endTime = Calendar.getInstance().getTimeInMillis();
-			System.out.println("value-1:" + numberOfWorkersExecuting);
+			org.logger.api.Logger.getInstance().info("value-1:" + numberOfWorkersExecuting);
 			numberOfWorkersExecuting--;
-			System.out.println("value:" + numberOfWorkersExecuting);
+			org.logger.api.Logger.getInstance().info("value:" + numberOfWorkersExecuting);
 			if (numberOfWorkersExecuting == 0) {
-				System.out.println("closing connection.");
+				org.logger.api.Logger.getInstance().info("closing connection.");
 //				outputStream.write(-1);
 //				outputStream.flush();
 //				outputStream.close();

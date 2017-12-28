@@ -37,7 +37,7 @@ public abstract class AbstractWorkersManager implements ObjectPooling<Worker>, I
 
 	public void init() {
 		int size = Integer.parseInt(ApplicationPropertyReader.getInstance().getMessage("default.worker.pool.size"));
-		System.out.println("Default workers pool size:" + size);
+		org.logger.api.Logger.getInstance().info("Default workers pool size:" + size);
 		MONITOR.setPoolSize(size);
 		MAX_POOL_SIZE = Integer.parseInt(ApplicationPropertyReader.getInstance().getMessage("max.worker.pool.size"));
 	}
@@ -58,7 +58,7 @@ public abstract class AbstractWorkersManager implements ObjectPooling<Worker>, I
 		}
 
 		public void destroy() {
-			System.out.println("Destroying Workers Monitor.");
+			org.logger.api.Logger.getInstance().info("Destroying Workers Monitor.");
 			for (Worker worker : workers) {
 				worker.destroy();
 				POOL_SIZE--;
@@ -93,7 +93,7 @@ public abstract class AbstractWorkersManager implements ObjectPooling<Worker>, I
 		}
 
 		public void releaseWorkers() {
-			System.out.println("Releasing all workers.");
+			org.logger.api.Logger.getInstance().info("Releasing all workers.");
 			for (Worker worker : workers) {
 				if (worker.isWorking()) {
 					worker.destroy();
@@ -102,7 +102,7 @@ public abstract class AbstractWorkersManager implements ObjectPooling<Worker>, I
 			}
 			if (POOL_SIZE > 5)
 				workers.clear();
-			System.out.println("All workers are released.");
+			org.logger.api.Logger.getInstance().info("All workers are released.");
 		}
 
 	}

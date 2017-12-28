@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import org.network.io.abstracts.writer.AbstractFileWriter;
+import org.network.signal.IONotifyer;
 import org.network.work.IOWork;
 import org.process.batch.contracts.Process;
 
@@ -26,6 +27,7 @@ public class FileWriter extends AbstractFileWriter {
 		process = new org.process.batch.action.Process();
 
 		ioWork = new IOWork();
+		ioWork.setIoNotifyer(new IONotifyer());
 	}
 
 	@Override

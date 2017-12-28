@@ -21,7 +21,7 @@ public class JFileChooserListener implements ActionListener {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setMultiSelectionEnabled(true);
 		String actionCommand = e.getActionCommand();
-		System.out.println("command:" + actionCommand);
+		org.logger.api.Logger.getInstance().info("command:" + actionCommand);
 		if ("ApproveSelection".equals(actionCommand)) {
 			int odInt = fileChooser.showOpenDialog(((JFrame) component).getContentPane());
 			File[] filesToBeSend = fileChooser.getSelectedFiles();

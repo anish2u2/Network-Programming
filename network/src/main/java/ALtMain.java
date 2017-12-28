@@ -27,7 +27,7 @@ public class ALtMain {
 			final FileOutputStream fileOutputStream = new FileOutputStream(fil);
 			long fileSize = file.length();
 			int rate = getThroughput(fileSize);
-			System.out.println("Throughput:" + rate);
+			org.logger.api.Logger.getInstance().info("Throughput:" + rate);
 			byte[] buffer = new byte[rate];
 			long time = System.currentTimeMillis();
 			while (inputStream.read(buffer) != -1) {
@@ -35,7 +35,7 @@ public class ALtMain {
 				fileOutputStream.flush();
 			}
 			fileOutputStream.close();
-			System.out.println("Spent Time:" + (System.currentTimeMillis() - time));
+			org.logger.api.Logger.getInstance().info("Spent Time:" + (System.currentTimeMillis() - time));
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

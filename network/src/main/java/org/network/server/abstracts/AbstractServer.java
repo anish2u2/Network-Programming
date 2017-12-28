@@ -30,7 +30,7 @@ public abstract class AbstractServer implements Server {
 		log_file_location = ApplicationPropertyReader.getInstance().getMessage("default.network.log.folder.location");
 		client_socket_connection_per_request = Integer.parseInt(
 				ApplicationPropertyReader.getInstance().getMessage("default.opened.client.socket.size.per.connection"));
-		System.out.println("Default_Port:" + default_port);
+		org.logger.api.Logger.getInstance().info("Default_Port:" + default_port);
 	}
 
 	@Override

@@ -45,11 +45,12 @@ public class IOWork implements Init, Work, Destroy {
 			while (readData() != -1) {
 
 			}
+			notifyer.notifyObject();
 			threadCounter--;
 			if (threadCounter == 0)
 				outputStream.close();
-			System.out.println("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));
-			System.out.println("Memory used:"
+			org.logger.api.Logger.getInstance().info("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));
+			org.logger.api.Logger.getInstance().info("Memory used:"
 					+ ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000) + " M.B");
 		} catch (Exception e) {
 			e.printStackTrace();

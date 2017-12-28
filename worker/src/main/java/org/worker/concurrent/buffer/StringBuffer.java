@@ -17,7 +17,7 @@ public class StringBuffer implements Buffer<String>, Init, Destroy {
 	}
 
 	public void push(String data) {
-		//System.out.println(data);
+		//org.logger.api.Logger.getInstance().info(data);
 		synchronized (lock) {
 			builder.append(data);
 			lock.notifyAll();
@@ -29,7 +29,7 @@ public class StringBuffer implements Buffer<String>, Init, Destroy {
 		try {
 		synchronized (lock) {
 			String readedData = builder.toString();
-			//System.out.println(readedData);
+			//org.logger.api.Logger.getInstance().info(readedData);
 			if(readedData==null) {
 				lock.wait();
 				readedData = builder.toString();

@@ -71,7 +71,7 @@ public class MultipleThreadWriting {
 							break;
 						}
 					}
-					System.out.println(
+					org.logger.api.Logger.getInstance().info(
 							"Time tacken to read the stream :" + (Calendar.getInstance().getTimeInMillis() - time));
 					halt = true;
 				} catch (Exception ex) {
@@ -153,7 +153,7 @@ public class MultipleThreadWriting {
 							}
 						}
 					}
-					System.out.println(
+					org.logger.api.Logger.getInstance().info(
 							"Time tacken to write the stream :" + (Calendar.getInstance().getTimeInMillis() - time));
 					outputStream.close();
 				} catch (Exception ex) {
@@ -174,7 +174,7 @@ public class MultipleThreadWriting {
 				long mb = 1024 * 1024;
 				boolean isGCCalled = false;
 				while (true) {
-					System.out.println(
+					org.logger.api.Logger.getInstance().info(
 							"Total Memo:" + (totalMemo / mb) + " Free Memo:" + (Runtime.getRuntime().freeMemory() / mb)
 									+ " Utilized Memo:" + ((totalMemo - Runtime.getRuntime().freeMemory()) / mb));
 					try {

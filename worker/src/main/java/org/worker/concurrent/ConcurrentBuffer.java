@@ -11,14 +11,14 @@ public class ConcurrentBuffer<T,K> implements org.worker.contracts.ConcurrentBuf
 
 	@SuppressWarnings("unchecked")
 	public Buffer<T> getBuffer(K type) {
-		System.out.println("class Name:"+type.getClass().getClass());
-		System.out.println("class Name:"+type.getClass().getClass());
+		org.logger.api.Logger.getInstance().info("class Name:"+type.getClass().getClass());
+		org.logger.api.Logger.getInstance().info("class Name:"+type.getClass().getClass());
 		if ("String".equals(type)) {
-			System.out.println("String class is assignable..");
+			org.logger.api.Logger.getInstance().info("String class is assignable..");
 			return (Buffer<T>) new org.worker.concurrent.buffer.StringBuffer();
 			
 		}
-		System.out.println("String class is not assingable.");
+		org.logger.api.Logger.getInstance().info("String class is not assingable.");
 		return null;
 	}
 

@@ -10,13 +10,18 @@
 		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-<!-- 		So for now we are writing data to socket as bytes so we don't need any codec for now -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>commons-codec</groupId> -->
-<!-- 			<artifactId>commons-codec</artifactId> -->
-<!-- 			<version>1.10</version> -->
-<!-- 		</dependency> -->
-
+		<!-- So for now we are writing data to socket as bytes so we don't need 
+			any codec for now -->
+		<!-- <dependency> -->
+		<!-- <groupId>commons-codec</groupId> -->
+		<!-- <artifactId>commons-codec</artifactId> -->
+		<!-- <version>1.10</version> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>logger</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

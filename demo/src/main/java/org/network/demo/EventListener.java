@@ -27,7 +27,7 @@ public class EventListener implements ActionListener, Destroy {
 			server = new ServerMaintainer();
 			server.startServer();
 
-			System.out.println("GOt the channel");
+			org.logger.api.Logger.getInstance().info("GOt the channel");
 			FileChooser fileChooser = new FileChooser();
 			final JFileChooserListener jfChooserListener = new JFileChooserListener();
 			jfChooserListener.setFrame(frame);
@@ -39,11 +39,11 @@ public class EventListener implements ActionListener, Destroy {
 				public void work() {
 					while (true) {
 						final CommunicationChannel channel = server.getChannel();
-						System.out.println("Waiting to select file");
+						org.logger.api.Logger.getInstance().info("Waiting to select file");
 						List<String> files = jfChooserListener.listOfSelectedFiles();
-						System.out.println("File selected.");
+						org.logger.api.Logger.getInstance().info("File selected.");
 						for (String str : files) {
-							System.out.println("File:" + str);
+							org.logger.api.Logger.getInstance().info("File:" + str);
 							FileWriter writer = new org.network.io.file.writer.FileWriter();
 							writer.setOutputStream(channel.getWriter().getOutputStream());
 							writer.writeFile(str);
