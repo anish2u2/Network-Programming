@@ -49,7 +49,7 @@ public class Logger implements Init, Destroy {
 	 * 
 	 * @param prefixFilePath
 	 */
-	public void setPrefixFilePath(String prefixFilePath) {
+	public static void setPrefixFilePath(String prefixFilePath) {
 		Logger.prefixFilePath = prefixFilePath;
 	}
 
@@ -153,7 +153,7 @@ public class Logger implements Init, Destroy {
 
 	private void write(String message) {
 		try {
-			dataOutputStream.write(message + "/n");
+			dataOutputStream.write(message);
 			dataOutputStream.flush();
 		} catch (Exception ex) {
 			ex.printStackTrace();

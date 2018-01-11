@@ -1,5 +1,6 @@
 package org.network.io.file.reader;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
@@ -7,7 +8,9 @@ import org.network.file.Filehelper;
 import org.network.io.abstracts.reader.AbstractFileReader;
 import org.network.signal.IONotifyer;
 import org.network.work.IOWork;
+import org.network.work.parallel.reciever.FileRecieverWork;
 import org.process.batch.contracts.Process;
+import org.worker.manager.WorkersManager;
 
 public class FileReader extends AbstractFileReader {
 
@@ -16,6 +19,8 @@ public class FileReader extends AbstractFileReader {
 	private Process process;
 
 	private IOWork ioWork;
+	
+	public static String prefix="temp_"; 
 
 	{
 		init();
@@ -39,10 +44,18 @@ public class FileReader extends AbstractFileReader {
 			e.printStackTrace();
 		}
 		try {
-			FileOutputStream fos = new FileOutputStream(Filehelper.createFile(toFileLocation, fileName));
-			ioWork.setInputStream(getInputStream());
-			ioWork.setOutputStream(fos);
-			process.startProcess(ioWork);
+			File file=Filehelper.createFile(toFileLocation, fileName);
+			FileOutputStream fos = new FileOutputStream(file);
+			//ioWork.setInputStream(getInputStream());
+			//ioWork.setOutputStream(fos);
+			FileRecieverWork fileRecieverWork = new FileRecieverWork();
+			fileRecieverWork.setInputStream(getInputStream());
+			fileRecieverWork.setOutputStream(fos);
+			fileRecieverWork.setFileName(file.getAbsolutePath());
+			WorkersManager.getInstance().assignWroker(fileRecieverWork);
+			// process.startProcess(ioWork);
+			// ioWork.work();
+			//WorkersManager.getInstance().assignWroker(ioWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

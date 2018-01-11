@@ -22,4 +22,9 @@ public class IONotifyer implements Notifyer {
 		return flage;
 	}
 
+	@Override
+	public void reset() {
+		flage = false;
+	}
+
 }

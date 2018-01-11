@@ -1,15 +1,19 @@
 package org.network.work;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Calendar;
 
 import org.commons.contracts.Destroy;
 import org.commons.contracts.Init;
-import org.network.signal.IONotifyer;
+import org.network.work.parallel.ReaderWork;
+import org.network.work.parallel.WriterWork;
+import org.network.work.parallel.buffer.ByteArrayBuffer;
 import org.pattern.contracts.behavioral.Notifyer;
 import org.worker.contracts.Work;
+import org.worker.manager.WorkersManager;
 
 public class IOWork implements Init, Work, Destroy {
 
@@ -40,18 +44,39 @@ public class IOWork implements Init, Work, Destroy {
 	@Override
 	public void work() {
 		try {
-			long startTime = Calendar.getInstance().getTimeInMillis();
-			threadCounter++;
-			while (readData() != -1) {
-
+			DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+			DataInputStream dataInputStream = new DataInputStream(inputStream);
+			org.logger.api.Logger.getInstance().info("Starting work.");
+			byte[] data = new byte[1024];
+			while (dataInputStream.read(data) != -1) {
+				dataOutputStream.write(data, 0, data.length);
 			}
-			notifyer.notifyObject();
-			threadCounter--;
-			if (threadCounter == 0)
-				outputStream.close();
-			org.logger.api.Logger.getInstance().info("Time tacken to complete:" + (Calendar.getInstance().getTimeInMillis() - startTime));
-			org.logger.api.Logger.getInstance().info("Memory used:"
-					+ ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1000000) + " M.B");
+			outputStream.flush();
+			org.logger.api.Logger.getInstance().info("Work Done.");
+			outputStream.close();
+			/*
+			 * ByteArrayBuffer buffer = new ByteArrayBuffer(); ReaderWork
+			 * readerWork = new ReaderWork(); WriterWork writerWork = new
+			 * WriterWork(); readerWork.setInputStream(inputStream);
+			 * readerWork.setByteArrayBuffer(buffer);
+			 * writerWork.setBuffer(buffer);
+			 * writerWork.setOutputStream(outputStream);
+			 * WorkersManager.getInstance().assignWroker(readerWork);
+			 * WorkersManager.getInstance().assignWroker(writerWork);
+			 */
+			/*
+			 * long startTime = Calendar.getInstance().getTimeInMillis();
+			 * threadCounter++; while (readData() != -1) {
+			 * 
+			 * } notifyer.notifyObject(); threadCounter--; if (threadCounter ==
+			 * 0) outputStream.close();
+			 * org.logger.api.Logger.getInstance().info(
+			 * "Time tacken to complete:" +
+			 * (Calendar.getInstance().getTimeInMillis() - startTime));
+			 * org.logger.api.Logger.getInstance().info("Memory used:" +
+			 * ((Runtime.getRuntime().totalMemory() -
+			 * Runtime.getRuntime().freeMemory()) / 1000000) + " M.B");
+			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,7 +102,7 @@ public class IOWork implements Init, Work, Destroy {
 
 	@Override
 	public void init() {
-		
+
 	}
 
 	public void setInputStream(InputStream inputStream) {
@@ -87,6 +112,7 @@ public class IOWork implements Init, Work, Destroy {
 
 	public void setOutputStream(OutputStream outputStream) {
 		this.outputStream = outputStream;
+		// this.dataOutputStream = new DataOutputStream(outputStream);
 	}
 
 	public Notifyer getIoNotifyer() {

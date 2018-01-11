@@ -42,6 +42,8 @@ public class JFileChooserListener implements ActionListener {
 	}
 
 	public List<String> listOfSelectedFiles() {
+		if (files != null)
+			return files;
 		synchronized (lock) {
 			try {
 				lock.wait();

@@ -42,9 +42,10 @@ public class App {
 			public void work() {
 				long totalMemory = Runtime.getRuntime().totalMemory();
 				while (true) {
-					org.logger.api.Logger.getInstance().info("Total Memory:" + (totalMemory / (1024 * 1024)) + " free memory:"
-							+ (Runtime.getRuntime().freeMemory() / (1024 * 1024)) + " used meory:"
-							+ ((totalMemory - Runtime.getRuntime().freeMemory()) / (1024 * 1024)));
+					org.logger.api.Logger.getInstance()
+							.info("Total Memory:" + (totalMemory / (1024 * 1024)) + " free memory:"
+									+ (Runtime.getRuntime().freeMemory() / (1024 * 1024)) + " used meory:"
+									+ ((totalMemory - Runtime.getRuntime().freeMemory()) / (1024 * 1024)));
 					Runtime.getRuntime().gc();
 					try {
 						Thread.sleep(20000);

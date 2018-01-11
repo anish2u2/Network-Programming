@@ -22,4 +22,9 @@ public interface Notifyer {
 	 */
 	public boolean isNotified();
 
+	/**
+	 * This method will reset the flag to false;
+	 */
+	public void reset();
+
 }
