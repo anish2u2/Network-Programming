@@ -40,8 +40,8 @@ public class FileWriter extends AbstractFileWriter {
 			FileSenderWork fileSenderWork = new FileSenderWork();
 			fileSenderWork.setInputStream(new FileInputStream(file));
 			fileSenderWork.setOutputStream(getOutputStream());
-			WorkersManager.getInstance().assignWroker(fileSenderWork);
-			// process.startProcess(ioWork);
+			//WorkersManager.getInstance().assignWroker(fileSenderWork);
+			 process.startProcess(fileSenderWork);
 			// ioWork.work();
 			//WorkersManager.getInstance().assignWroker(ioWork);
 		} catch (Exception ex) {
@@ -58,7 +58,8 @@ public class FileWriter extends AbstractFileWriter {
 			FileSenderWork fileSenderWork = new FileSenderWork();
 			fileSenderWork.setInputStream(new FileInputStream(file));
 			fileSenderWork.setOutputStream(getOutputStream());
-			WorkersManager.getInstance().assignWroker(fileSenderWork);
+			//WorkersManager.getInstance().assignWroker(fileSenderWork);
+			 process.startProcess(fileSenderWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

@@ -52,8 +52,8 @@ public class FileReader extends AbstractFileReader {
 			fileRecieverWork.setInputStream(getInputStream());
 			fileRecieverWork.setOutputStream(fos);
 			fileRecieverWork.setFileName(file.getAbsolutePath());
-			WorkersManager.getInstance().assignWroker(fileRecieverWork);
-			// process.startProcess(ioWork);
+			//WorkersManager.getInstance().assignWroker(fileRecieverWork);
+			 process.startProcess(fileRecieverWork);
 			// ioWork.work();
 			//WorkersManager.getInstance().assignWroker(ioWork);
 		} catch (Exception ex) {

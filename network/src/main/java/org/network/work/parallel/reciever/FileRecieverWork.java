@@ -105,7 +105,7 @@ public class FileRecieverWork implements Work, Init, Destroy {
 		this.outputStream = outputStream;
 	}
 
-	public void decodeFile() {
+	/*public void decodeFile() {
 
 		WorkersManager.getInstance().assignWroker(new Work() {
 
@@ -132,5 +132,5 @@ public class FileRecieverWork implements Work, Init, Destroy {
 
 			}
 		});
-	}
+	}*/
 }

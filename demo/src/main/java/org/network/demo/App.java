@@ -23,7 +23,7 @@ public class App {
 		ActionButton client = new ActionButton();
 		client.setText("CLIENT");
 		client.setActionCommand("CLIENT");
-		final EventListener listener = new EventListener();
+		final ClientEventListener listener = new ClientEventListener();
 		listener.setFrame(frame);
 		client.addActionListener(listener);
 		server.addActionListener(listener);

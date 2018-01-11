@@ -50,8 +50,6 @@ public class ClientEventListener implements ActionListener, Destroy {
 		 * 
 		 * } }); } else
 		 */ if ("CLIENT".equals(command)) {
-			final Client client = ClientFactory.getInstance().create();
-			client.connectTo("192.168.43.1", 9889);
 
 			// FileReader fileReader = new
 			// org.network.io.file.reader.FileReader();
@@ -68,37 +66,42 @@ public class ClientEventListener implements ActionListener, Destroy {
 			WorkersManager.getInstance().assignWroker(new Work() {
 
 				public void work() {
-					//while (true) {
+					while (true) {
 						try {
 							// final CommunicationChannel channel =
 							// server.getChannel();
-							System.out.println("Starting :");
-							CommunicationChannel communicationChannel = client.getCommunicationChannel();
-							
-							System.out.println("acquiring reader");
-							String line = communicationChannel.getReader().read();
-							System.out.println("got data :" + line);
-							if ("GOT_CONNECTION_ACKNOWLEDGE".equals(line)){
-								System.out.println("acquiring writer");
-								communicationChannel.getWriter().write("GOT_ACKNOWLEDGE_CLIENT");
-								communicationChannel.getWriter().getOutputStream().flush();
-								//communicationChannel.getWriter().write("GOT_ACKNOWLEDGE_CLIENT");
-							org.logger.api.Logger.getInstance().info("Waiting to select file");
 							List<String> files = jfChooserListener.listOfSelectedFiles();
-							if("START_FILE_SENDING".equals(communicationChannel.getReader().read())){
-							org.logger.api.Logger.getInstance().info("File selected.");
+							System.out.println("Starting :");
 							for (String str : files) {
-								org.logger.api.Logger.getInstance().info("File:" + str);
-								FileWriter writer = new org.network.io.file.writer.FileWriter();
-								writer.setOutputStream(communicationChannel.getWriter().getOutputStream());
-								writer.writeFile(str);
-							}
-							}
+								System.out.println("Trying to create new connections.");
+								Client client = ClientFactory.getInstance().create();
+								client.connectTo("192.168.43.1", 9889);
+								CommunicationChannel communicationChannel = client.getCommunicationChannel();
+
+								System.out.println("acquiring reader");
+								String line = communicationChannel.getReader().read();
+								System.out.println("got data :" + line);
+								if ("GOT_CONNECTION_ACKNOWLEDGE".equals(line)) {
+									System.out.println("acquiring writer");
+									communicationChannel.getWriter().write("GOT_ACKNOWLEDGE_CLIENT");
+									communicationChannel.getWriter().getOutputStream().flush();
+									// communicationChannel.getWriter().write("GOT_ACKNOWLEDGE_CLIENT");
+									org.logger.api.Logger.getInstance().info("Waiting to select file");
+
+									if ("START_FILE_SENDING".equals(communicationChannel.getReader().read())) {
+										org.logger.api.Logger.getInstance().info("File selected.");
+
+										org.logger.api.Logger.getInstance().info("File:" + str);
+										FileWriter writer = new org.network.io.file.writer.FileWriter();
+										writer.setOutputStream(communicationChannel.getWriter().getOutputStream());
+										writer.writeFile(str);
+									}
+								}
 							}
 						} catch (Exception ex) {
 							ex.printStackTrace();
 						}
-					//}
+					}
 				}
 
 				public void stopWork() {
