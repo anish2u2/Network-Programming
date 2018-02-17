@@ -10,7 +10,6 @@ import org.network.signal.IONotifyer;
 import org.network.work.IOWork;
 import org.network.work.parallel.reciever.FileRecieverWork;
 import org.process.batch.contracts.Process;
-import org.worker.manager.WorkersManager;
 
 public class FileReader extends AbstractFileReader {
 
@@ -19,8 +18,7 @@ public class FileReader extends AbstractFileReader {
 	private Process process;
 
 	private IOWork ioWork;
-	
-	public static String prefix="temp_"; 
+
 
 	{
 		init();
@@ -44,18 +42,13 @@ public class FileReader extends AbstractFileReader {
 			e.printStackTrace();
 		}
 		try {
-			File file=Filehelper.createFile(toFileLocation, fileName);
+			File file = Filehelper.createFile(toFileLocation, fileName);
 			FileOutputStream fos = new FileOutputStream(file);
-			//ioWork.setInputStream(getInputStream());
-			//ioWork.setOutputStream(fos);
 			FileRecieverWork fileRecieverWork = new FileRecieverWork();
 			fileRecieverWork.setInputStream(getInputStream());
 			fileRecieverWork.setOutputStream(fos);
 			fileRecieverWork.setFileName(file.getAbsolutePath());
-			//WorkersManager.getInstance().assignWroker(fileRecieverWork);
-			 process.startProcess(fileRecieverWork);
-			// ioWork.work();
-			//WorkersManager.getInstance().assignWroker(ioWork);
+			process.startProcess(fileRecieverWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

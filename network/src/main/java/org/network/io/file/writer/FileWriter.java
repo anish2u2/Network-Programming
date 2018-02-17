@@ -8,7 +8,6 @@ import org.network.signal.IONotifyer;
 import org.network.work.IOWork;
 import org.network.work.parallel.sender.FileSenderWork;
 import org.process.batch.contracts.Process;
-import org.worker.manager.WorkersManager;
 
 public class FileWriter extends AbstractFileWriter {
 
@@ -34,16 +33,10 @@ public class FileWriter extends AbstractFileWriter {
 	public void writeFile(File file) {
 		try {
 			this.write("fileName:" + file.getName());
-
-//			ioWork.setInputStream(new FileInputStream(file));
-//			ioWork.setOutputStream(getOutputStream());
 			FileSenderWork fileSenderWork = new FileSenderWork();
 			fileSenderWork.setInputStream(new FileInputStream(file));
 			fileSenderWork.setOutputStream(getOutputStream());
-			//WorkersManager.getInstance().assignWroker(fileSenderWork);
-			 process.startProcess(fileSenderWork);
-			// ioWork.work();
-			//WorkersManager.getInstance().assignWroker(ioWork);
+			process.startProcess(fileSenderWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -58,8 +51,7 @@ public class FileWriter extends AbstractFileWriter {
 			FileSenderWork fileSenderWork = new FileSenderWork();
 			fileSenderWork.setInputStream(new FileInputStream(file));
 			fileSenderWork.setOutputStream(getOutputStream());
-			//WorkersManager.getInstance().assignWroker(fileSenderWork);
-			 process.startProcess(fileSenderWork);
+			process.startProcess(fileSenderWork);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

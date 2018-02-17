@@ -11,6 +11,11 @@ import org.worker.contracts.Work;
 
 import net.iharder.Base64;
 
+/**
+ * This file will be used to send data to network.
+ * @author Anish Singh
+ *
+ */
 public class FileSenderWork implements Work, Init, Destroy {
 
 	private InputStream inputStream;
